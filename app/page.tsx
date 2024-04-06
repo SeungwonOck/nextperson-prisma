@@ -129,7 +129,7 @@ const HomePage: React.FC = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            People
+            Chris' people
           </Typography>
         </Toolbar>
       </AppBar>
