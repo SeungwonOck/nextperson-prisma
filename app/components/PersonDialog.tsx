@@ -38,6 +38,17 @@ const PersonDialog: React.FC<PersonDialogProps> = ({ open, handleClose, currentP
         value={currentPerson?.phone || ''}
         onChange={e => setCurrentPerson(prev => ({ ...prev!, phone: e.target.value }))}
       />
+      <TextField
+        margin="dense"
+        label="Date Of Birth"
+        fullWidth
+        type="date" // Set the type to "date" to enable the date picker
+        value={currentPerson?.dateOfBirth ? new Date(currentPerson.dateOfBirth).toISOString().slice(0, 10) : ''} // Convert dateOfBirth to ISO format (YYYY-MM-DD) for the input value
+        onChange={e => setCurrentPerson(prev => ({ ...prev!, dateOfBirth: e.target.value }))}
+        InputLabelProps={{
+            shrink: true, // This ensures the label doesn't overlap the input value
+        }}
+      />
     </DialogContent>
     <DialogActions>
       <Button onClick={handleClose} color="primary">

@@ -30,19 +30,41 @@ export async function GET(request: Request, context: any) {
 
 }
 
+function convertStringToDate(dateString: string) {
+    const date = new Date(dateString);
+    // Check if the Date object is valid
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid date string: '${dateString}'`);
+    }
+    return date;
+}
+
+
 export async function PUT(request: Request, context: any) {
   const { id } = context.params;
 
   try {
 
     const body = await request.json();
-    const { firstname, lastname, phone } = body;
+    const { firstname, lastname, phone, dateOfBirth } = body;
 
-    if (!firstname || !lastname || !phone) {
+    if (!firstname || !lastname || !phone || !dateOfBirth) {
       return new Response('Missing required fields', {
         status: 400,
       });
     }
+
+    let dateOfBirthDate;
+try {
+    // Convert the dateOfBirth string to a Date object
+    dateOfBirthDate = convertStringToDate(dateOfBirth);
+} catch (error) {
+    // Convert the error to a string before accessing the `message` property
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return new Response(`Invalid date format for dateOfBirth: ${errorMessage}`, {
+        status: 400,
+    });
+}
 
     const updatedPerson = await prisma.person.update({
       where: {
@@ -52,6 +74,7 @@ export async function PUT(request: Request, context: any) {
         firstname,
         lastname,
         phone,
+        dateOfBirth: dateOfBirthDate,
         // You can add other fields to update here
       },
     });

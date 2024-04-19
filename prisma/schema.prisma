@@ -1,30 +1,53 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-
-//added the binaryTargets rhel so that it works with AWS Amplify 
-//native is for Windows OS 
 generator client {
-  provider = "prisma-client-js"
-    binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
-
-
-  //added directUrl for Vercel Neon 
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection which is required by Vercel Neon
-
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-
-
-
 model Person {
-  id        Int     @id @default(autoincrement())
-  firstname String
-  lastname  String
-  phone     String
+  id          Int       @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  phone       String
+  dateOfBirth DateTime?
+}
+
+model ereferral {
+  referral_id                       Int       @id @default(autoincrement())
+  e_referral_id                     String    @unique @db.VarChar(255)
+  referral_datetime                 DateTime  @db.Timestamptz(6)
+  clinician_name                    String?   @db.VarChar(255)
+  clinician_contact_details         String?   @db.VarChar(20)
+  healthcare_provider_number        String?   @db.VarChar(50)
+  practice_name                     String?   @db.VarChar(255)
+  practice_contact_details          String?   @db.VarChar(20)
+  secure_messaging_provider         String?   @db.VarChar(255)
+  secure_messaging_endpoint         String?   @db.VarChar(255)
+  patient_first_name                String?   @db.VarChar(255)
+  patient_last_name                 String?   @db.VarChar(255)
+  patient_contact_details           String?   @db.VarChar(20)
+  patient_alternate_contact_name    String?   @db.VarChar(255)
+  patient_alternate_contact_details String?   @db.VarChar(20)
+  target_organisation_name          String?   @db.VarChar(255)
+  target_faculty                    String?   @db.VarChar(255)
+  referral_reason                   String?
+  medication_history                String?
+  comorbidity                       String?
+  patient_dob                       DateTime? @db.Date
+  medicare_number                   String?   @db.VarChar(15)
+  medicare_expiry                   DateTime? @db.Date
+  atsi_code                         Int?
+  primary_language_code             Int?
+  additional_info                   String?
+  patient_full_address              String?
+  patient_email                     String?   @db.VarChar(255)
+  patient_postcode                  String?   @db.VarChar(4)
+  patient_state                     String?   @db.VarChar(3)
+  referral_status                   Int?
+  referral_accepted_rejected_date   DateTime? @db.Timestamptz(6)
 }
